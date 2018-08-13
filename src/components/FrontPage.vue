@@ -1,8 +1,8 @@
 <template>
 <div id="focus" class="container" @keydown.40="moveUp" @keydown.38="moveDown" @keydown.13="onEnter" tabIndex="0">
   <div class="main-menu">
-    <div class="button active">Start</div>
-    <div class="button">Load</div>
+    <div class="button active" v-on:click="onNew">Start</div>
+    <div class="button" v-on:click="onLoad">Load</div>
   </div>
 </div>
 </template>
@@ -35,10 +35,60 @@ export default {
     },
 
     onEnter: function() {
+      var activeButton = document.getElementsByClassName("active")[0];
+      if (activeButton.innerHTML == "Start") {
+        this.onNew();
+      } else {
+        this.onLoad();
+      }
+    },
+
+    onNew() {
+      var that = this;
+      this.exitAnimation(function() {
+        that.$emit("start-new");
+      });
+    },
+
+    onLoad() {
+      var that = this;
+      this.exitAnimation(function() {
+        that.$emit("load");
+      });
+    },
+
+    exitAnimation(callback) {
+      var activeButton = document.getElementsByClassName("active")[0];
+      this.addTransitionListener(activeButton, callback);
       var buttons = document.getElementsByClassName("button");
       [].forEach.call(buttons, function(el) {
         el.classList.add("leave");
       });
+    },
+
+    addTransitionListener: function(node, callback) {
+      function whichTransitionEvent() {
+        var t;
+        var el = document.createElement("fakeelement");
+        var transitions = {
+          transition: "animationend",
+          OTransition: "oAnimationEnd",
+          MozTransition: "animationend",
+          WebkitTransition: "webkitAnimationEnd"
+        };
+
+        for (t in transitions) {
+          if (el.style[t] !== undefined) {
+            return transitions[t];
+          }
+        }
+      }
+
+      var transitionEvent = whichTransitionEvent();
+      transitionEvent &&
+        node.addEventListener(transitionEvent, function() {
+          callback();
+        });
     }
   },
   mounted: function() {
@@ -88,19 +138,25 @@ export default {
 }
 
 @keyframes button-enter {
-  from {
+  0% {
     transform: scale(0);
   }
-  to {
+  50% {
+    transform: scale(1, 0.1);
+  }
+  100% {
     transform: scale(1);
   }
 }
 
 @keyframes button-leave {
-  from {
+  0% {
     transform: scale(1);
   }
-  to {
+  50% {
+    transform: scale(1, 0.1);
+  }
+  100% {
     transform: scale(0);
   }
 }

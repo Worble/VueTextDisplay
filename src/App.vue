@@ -1,6 +1,8 @@
 <template>
-  <div id="app">
-    <DisplayTextContainer></DisplayTextContainer>
+  <div ref="app" id="app">
+    <div ref="main">
+    <FrontPage v-on:start-new="handleStartNew"/>
+    </div>
   </div>
 </template>
 
@@ -8,6 +10,7 @@
 import FrontPage from "./components/FrontPage.vue";
 import DisplayText from "./components/DisplayText.vue";
 import DisplayTextContainer from "./components/DisplayTextContainer.vue";
+import Vue from "vue";
 
 export default {
   name: "app",
@@ -15,6 +18,15 @@ export default {
     DisplayText,
     FrontPage,
     DisplayTextContainer
+  },
+  methods: {
+    handleStartNew: function() {
+      var ComponentClass = Vue.extend(DisplayTextContainer);
+      var instance = new ComponentClass();
+      instance.$mount(this.$refs.main); // pass nothing
+      // this.$refs.app.innerHTML = "";
+      // this.$refs.app.appendChild(instance.$el);
+    }
   }
 };
 </script>

@@ -44,6 +44,7 @@ export default {
         this.$refs.displayContainer.appendChild(instance.$el);
       }
     },
+
     setAnimationComplete: function() {
       this.animationComplete = true;
     }

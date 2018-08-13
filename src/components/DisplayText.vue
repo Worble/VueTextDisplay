@@ -61,6 +61,7 @@ Etiam non est id odio tempor porttitor ac a justo. Donec eget laoreet velit. Nul
       els[0].classList.remove("animated", "fadeIn");
       if (els[0]) this.removeClasses(els);
     },
+
     addTransitionListener: function(node) {
       function whichTransitionEvent() {
         var t;
