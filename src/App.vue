@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <DisplayTextContainer></DisplayTextContainer>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import FrontPage from "./components/FrontPage.vue";
+import DisplayText from "./components/DisplayText.vue";
+import DisplayTextContainer from "./components/DisplayTextContainer.vue";
 
 export default {
   name: "app",
   components: {
-    HelloWorld
+    DisplayText,
+    FrontPage,
+    DisplayTextContainer
   }
 };
 </script>
-
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  margin: 0;
+  background-color: black;
+  color: white;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 </style>

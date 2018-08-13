@@ -1,5 +1,5 @@
 <template>
-  <div class="hello">
+  <div class="hello" @keydown.13="skipText" @click="skipText">
     <h1>{{ msg }}</h1>
     <p>
       For guide and recipes on how to configure / customize this project,<br>
