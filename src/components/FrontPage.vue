@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import events from "../events/events";
+import addTransitionListener from "../helpers/addTransitionListener";
+
 export default {
   name: "FrontPage",
   methods: {
@@ -46,49 +49,24 @@ export default {
     onNew() {
       var that = this;
       this.exitAnimation(function() {
-        that.$emit("start-new");
+        that.$emit(events.startNew);
       });
     },
 
     onLoad() {
       var that = this;
       this.exitAnimation(function() {
-        that.$emit("load");
+        that.$emit(events.load);
       });
     },
 
     exitAnimation(callback) {
       var activeButton = document.getElementsByClassName("active")[0];
-      this.addTransitionListener(activeButton, callback);
+      addTransitionListener(callback, activeButton);
       var buttons = document.getElementsByClassName("button");
       [].forEach.call(buttons, function(el) {
         el.classList.add("leave");
       });
-    },
-
-    addTransitionListener: function(node, callback) {
-      function whichTransitionEvent() {
-        var t;
-        var el = document.createElement("fakeelement");
-        var transitions = {
-          transition: "animationend",
-          OTransition: "oAnimationEnd",
-          MozTransition: "animationend",
-          WebkitTransition: "webkitAnimationEnd"
-        };
-
-        for (t in transitions) {
-          if (el.style[t] !== undefined) {
-            return transitions[t];
-          }
-        }
-      }
-
-      var transitionEvent = whichTransitionEvent();
-      transitionEvent &&
-        node.addEventListener(transitionEvent, function() {
-          callback();
-        });
     }
   },
   mounted: function() {

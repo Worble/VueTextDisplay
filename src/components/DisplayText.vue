@@ -5,12 +5,13 @@
     </div>
 </template>
 <script>
+import events from "../events/events";
+import addTransitionListener from "../helpers/addTransitionListener";
 export default {
   name: "DisplayText",
-  props: ["animateText"],
+  props: ["animateText", "skipText"],
   data: function() {
     return {
-      animationComplete: false,
       text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nibh justo, cursus non lacus id, cursus scelerisque nulla. Vestibulum id lectus eu sapien pulvinar venenatis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse lobortis elit augue, in lobortis risus gravida dapibus. Pellentesque vitae mollis est. Praesent eu ligula a mauris porta euismod. Vivamus porta ante mauris, vitae aliquam tellus sodales at. Vestibulum mollis rutrum elementum. Nunc dapibus porttitor urna, ut iaculis metus fringilla non.
 
 Sed non ligula id ex rutrum porta. Cras vel ultrices nisl. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed nec neque nec quam placerat gravida a vel ligula. Donec elit urna, vulputate sit amet hendrerit et, iaculis ut nunc. Praesent arcu libero, fermentum eu cursus sit amet, rutrum vel felis. Ut aliquam ut ante in sollicitudin. Mauris in aliquam ex.
@@ -27,65 +28,54 @@ Etiam non est id odio tempor porttitor ac a justo. Donec eget laoreet velit. Nul
       if (this.animateText == false) {
         var els = document.getElementsByClassName("animated", "fadeIn");
         this.removeClasses(els);
-        this.$emit("animation-complete");
+        this.$emit(events.animationComplete);
       }
     }
   },
   mounted() {
+    var node;
+    var el = this.$refs.animationContainer;
     if (!this.skipText) {
-      var el = this.$refs.animationContainer;
       var lines = this.text.split("\n");
-      var delay = 0.1;
+      var delay = this.$store.state.options.animationSpeed.value;
       for (var i = 0; i < lines.length; i++) {
         var words = lines[i].split(" ");
         for (var j = 0; j < words.length; j++) {
-          var node = document.createElement("div");
+          node = document.createElement("span");
           node.classList.add("animated", "fadeIn", "word");
-          node.style.display = "inline-block";
           node.style["animation-delay"] = delay + "s";
           node.innerHTML = words[j] + "&nbsp";
 
           if (i == lines.length - 1 && j == words.length - 1) {
-            this.addTransitionListener(node);
+            var that = this;
+            addTransitionListener(function() {
+              that.$emit(events.animationComplete);
+            }, node);
           }
 
           el.appendChild(node);
-          delay += 0.1;
+          delay += this.$store.state.options.animationSpeed.value;
         }
         el.appendChild(document.createElement("br"));
       }
+    } else {
+      node = document.createElement("span");
+      node.innerHTML = this.text;
+      el.appendChild(node);
+      this.$emit(events.animationComplete);
     }
+    this.$nextTick(() =>
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest"
+      })
+    );
   },
   methods: {
     removeClasses: function(els) {
       els[0].classList.remove("animated", "fadeIn");
       if (els[0]) this.removeClasses(els);
-    },
-
-    addTransitionListener: function(node) {
-      function whichTransitionEvent() {
-        var t;
-        var el = document.createElement("fakeelement");
-        var transitions = {
-          transition: "animationend",
-          OTransition: "oAnimationEnd",
-          MozTransition: "animationend",
-          WebkitTransition: "webkitAnimationEnd"
-        };
-
-        for (t in transitions) {
-          if (el.style[t] !== undefined) {
-            return transitions[t];
-          }
-        }
-      }
-
-      var that = this;
-      var transitionEvent = whichTransitionEvent();
-      transitionEvent &&
-        node.addEventListener(transitionEvent, function() {
-          that.$emit("animation-complete");
-        });
     }
   }
 };
@@ -94,9 +84,5 @@ Etiam non est id odio tempor porttitor ac a justo. Donec eget laoreet velit. Nul
 .text-container {
   word-wrap: break-word;
   white-space: pre-line;
-}
-
-.word {
-  display: inline-block;
 }
 </style>
