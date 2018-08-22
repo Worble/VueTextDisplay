@@ -1,0 +1,27 @@
+[{
+        "id": 1,
+        "content": "The first thing you notice is the sound of rain lashing against the window",
+        "nextMessageId": 2
+    },
+    {
+        "id": 2,
+        "content": "You awake in a cold room, breathing heavily and drenched in sweat",
+        "nextMessageId": 3
+    },
+    {
+        "id": 3,
+        "content": "You look at the clock; 5AM. You can see the sunlight attempting to peek over the gloomy horizon from your bedroom window."
+    },
+    {
+        "id": 4,
+        "content": "Leaving the comfort of your bed, you sweep over the window and peer out into the muted morning sunlight"
+    },
+    {
+        "id": 5,
+        "content": "Gazing over the room, you can still see the faint glow of coals from the fireplace in your bedroom"
+    },
+    {
+        "id": 6,
+        "content": "Closing your eyes, you let the rythmic sound of rain ease you back into sleep"
+    }
+]

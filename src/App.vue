@@ -16,7 +16,7 @@ import DisplayTextContainer from "./components/DisplayTextContainer.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import OptionsMenuIcon from "./components/OptionsMenuIcon";
 import Vue from "vue";
-import events from "./events/events";
+import events from "./constants/events";
 
 export default {
   name: "app",
