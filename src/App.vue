@@ -1,11 +1,11 @@
 <template>
   <div ref="app" id="app">
-    <div ref="main">
+    <div ref="main" class="container">
       <FrontPage v-on:start-new="handleStartNew"/>
     </div>
     <OptionsMenuIcon v-on:options-menu-clicked="this.openSettingsMenu"/>
     <div v-if="this.showOptionsModal">
-      <OptionsContainer v-on:close-settings-menu="closeSettingsMenu"/>
+      <OptionsMenu v-on:close-settings-menu="closeSettingsMenu"/>
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 <script>
 import FrontPage from "./components/FrontPage.vue";
 import DisplayTextContainer from "./components/DisplayTextContainer.vue";
-import OptionsContainer from "./components/OptionsContainer.vue";
+import OptionsMenu from "./components/OptionsMenu.vue";
 import OptionsMenuIcon from "./components/OptionsMenuIcon";
 import Vue from "vue";
 import events from "./events/events";
@@ -24,7 +24,7 @@ export default {
     FrontPage,
     DisplayTextContainer,
     OptionsMenuIcon,
-    OptionsContainer
+    OptionsMenu
   },
   data: function() {
     return {
@@ -38,9 +38,11 @@ export default {
       instance.$mount(this.$refs.main);
     },
     openSettingsMenu: function() {
+      this.$refs.app.classList.add("no-scroll");
       this.showOptionsModal = true;
     },
     closeSettingsMenu: function() {
+      this.$refs.app.classList.remove("no-scroll");
       this.showOptionsModal = false;
     }
   }
@@ -48,13 +50,34 @@ export default {
 </script>
 <style>
 body {
-  margin: 15px 35px;
   background-color: black;
   color: white;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  height: 100vh;
+  margin: 0;
+}
+
+#app {
+  height: auto;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 15px 35px;
+  display: block;
+  position: absolute;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
 }
 
 * {
   outline: none;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 </style>

@@ -31,7 +31,7 @@
     </div>
 </template>
 <script>
-import events from "../events/events";
+import events from "../constants/events";
 
 export default {
   name: "OptionsMenuIcon",
@@ -51,5 +51,10 @@ export default {
   height: 30px;
   width: 30px;
   position: fixed;
+  opacity: 0.3;
+  transition: 0.2s;
+}
+.options-menu:hover {
+  opacity: 1;
 }
 </style>

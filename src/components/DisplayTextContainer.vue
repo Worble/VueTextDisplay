@@ -1,7 +1,7 @@
 <template>
     <div ref="container" id="focus" class="container" tabIndex="0" @keydown.13="onEnter" v-on:click="onEnter">
         <div ref="displayContainer">
-            <DisplayText :animateText=animateText :skipText=skipText v-on:animation-complete="setAnimationComplete" />
+            <DisplayText :animateText=animateText :skipText=this.$store.state.options.disableAnimation.value v-on:animation-complete="setAnimationComplete" />
         </div>
         <br/>
         <div v-if="this.animationComplete">
@@ -15,7 +15,7 @@
 <script>
 import DisplayText from "./DisplayText.vue";
 import Vue from "vue";
-import events from "../events/events";
+import events from "../constants/events";
 
 export default {
   name: "DisplayTextContainer",
@@ -25,8 +25,7 @@ export default {
   data() {
     return {
       animateText: true,
-      animationComplete: false,
-      skipText: this.$store.state.options.disableAnimation.value
+      animationComplete: false
     };
   },
   computed: {},
@@ -43,7 +42,10 @@ export default {
         var ComponentClass = Vue.extend(DisplayText);
         var instance = new ComponentClass({
           parent: this,
-          propsData: { animateText: this.animateText, skipText: this.skipText }
+          propsData: {
+            animateText: this.animateText,
+            skipText: this.$store.state.options.disableAnimation.value
+          }
         });
         instance.$on(events.animationComplete, this.setAnimationComplete);
         instance.$mount();
@@ -61,7 +63,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  height: 100vh;
+  height: 100%;
   flex-direction: column;
 }
 .read-more {

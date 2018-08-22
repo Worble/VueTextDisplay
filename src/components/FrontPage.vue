@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import events from "../events/events";
+import events from "../constants/events";
 import addTransitionListener from "../helpers/addTransitionListener";
 
 export default {
@@ -78,7 +78,7 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  height: 100vh;
+  height: 100%;
 }
 
 .main-menu {

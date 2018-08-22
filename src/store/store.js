@@ -7,21 +7,21 @@ Vue.use(Vuex)
 const state = {
   options: {
     animationSpeed: { name: "Animation Speed", value: 0.1, ordinal: 0 },
-    disableAnimation: { name: "Disable All Animation", value: false, ordinal: 1 }
+    disableAnimation: { name: "Disable Any Text Animation", value: false, ordinal: 1 }
   }
 }
 
 const mutations = {
   changeAnimationSpeed(state, speed) {
-    state.options.animationSpeed = speed;
+    state.options.animationSpeed.value = speed;
   },
   toggleDisableAnimation(state) {
-    state.options.disableAnimation = !state.options.disableAnimation;
+    state.options.disableAnimation.value = !state.options.disableAnimation.value;
   }
 }
 
 const actions = {
-  changeAnimationSpeed: ({ commit }) => commit('changeAnimationSpeed'),
+  changeAnimationSpeed: ({ commit }, speed) => commit('changeAnimationSpeed', speed),
   toggleDisableAnimation: ({ commit }) => commit('toggleDisableAnimation'),
 }
 

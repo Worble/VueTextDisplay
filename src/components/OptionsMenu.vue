@@ -1,28 +1,42 @@
 <template>
     <div class="modal-container" @click="onClick">
         <div ref="modal" class="modal">
-            <div v-for="option in $store.state.options" v-bind:key="option.ordinal">
-                {{option.name}}: {{option.value}}
+            <div>
+              {{$store.state.options.animationSpeed.name}}: <input type="number" :value="$store.state.options.animationSpeed.value" step="0.01" v-on:change="handleAnimationSpeedChange"/>
+            </div>
+            <br/>
+            <div>
+              {{$store.state.options.disableAnimation.name}}: <input type="checkbox" :value="$store.state.options.disableAnimation.value" :checked="$store.state.options.disableAnimation.value" v-on:change="handleDisableAnimationChange"/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import events from "../events/events";
+import events from "../constants/events";
+import actions from "../constants/actions";
 import addTransitionListener from "../helpers/addTransitionListener";
 
 export default {
   name: "OptionsContainer",
   methods: {
     onClick: function(event) {
-      if (!event.target.closest(".center")) {
+      if (!event.target.closest(".modal")) {
         this.$refs.modal.classList.add("close");
         var that = this;
         addTransitionListener(function() {
           that.$emit(events.closeModal);
         }, this.$refs.modal);
       }
+    },
+    handleAnimationSpeedChange: function(event) {
+      this.$store.dispatch(
+        actions.changeAnimationSpeed,
+        new Number(event.target.value)
+      );
+    },
+    handleDisableAnimationChange: function() {
+      this.$store.dispatch(actions.toggleDisableAnimation);
     }
   }
 };
