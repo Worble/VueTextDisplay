@@ -17,6 +17,7 @@ import OptionsMenu from "./components/OptionsMenu.vue";
 import OptionsMenuIcon from "./components/OptionsMenuIcon";
 import Vue from "vue";
 import events from "./constants/events";
+import actions from "./constants/actions";
 
 export default {
   name: "app",
@@ -33,9 +34,12 @@ export default {
   },
   methods: {
     handleStartNew: function() {
-      var ComponentClass = Vue.extend(DisplayTextContainer);
-      var instance = new ComponentClass({ parent: this });
-      instance.$mount(this.$refs.main);
+      var that = this;
+      this.$store.dispatch(actions.getNextMessage, 1).then(function() {
+        var ComponentClass = Vue.extend(DisplayTextContainer);
+        var instance = new ComponentClass({ parent: that });
+        instance.$mount(that.$refs.main);
+      });
     },
     openSettingsMenu: function() {
       this.$refs.app.classList.add("no-scroll");
