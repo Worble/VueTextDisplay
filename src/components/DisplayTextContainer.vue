@@ -9,11 +9,15 @@
               <polygon points="0,0 14,0 7,14"/>
             </svg>
         </div>
+        <div v-if="displayChoices">
+          <Choices v-on:choice-selected="choiceSelected"/>
+        </div>
     </div>
 </template>
 
 <script>
 import DisplayText from "./DisplayText.vue";
+import Choices from "./Choices.vue";
 import Vue from "vue";
 import events from "../constants/events";
 import actions from "../constants/actions";
@@ -21,12 +25,14 @@ import actions from "../constants/actions";
 export default {
   name: "DisplayTextContainer",
   components: {
-    DisplayText
+    DisplayText,
+    Choices
   },
   data() {
     return {
       animateText: true,
-      animationComplete: false
+      animationComplete: false,
+      displayChoices: false
     };
   },
   computed: {
@@ -41,34 +47,55 @@ export default {
     onEnter: function() {
       if (!this.animationComplete) {
         this.animateText = !this.animateText;
-      } else if (this.currentMessage.choices) {
+      } else if (this.currentMessage.choices.length > 0) {
+        this.displayChoices = true;
       } else {
-        var that = this;
-        this.$store
-          .dispatch(actions.getNextMessage, that.currentMessage.nextMessageId)
-          .then(function() {
-            that.animateText = true;
-            that.animationComplete = false;
-            var ComponentClass = Vue.extend(DisplayText);
-            var instance = new ComponentClass({
-              parent: that,
-              propsData: {
-                animateText: that.animateText,
-                skipText: that.$store.state.options.disableAnimation.value,
-                text: that.currentMessage.content
-              }
-            });
-            instance.$on(events.animationComplete, that.setAnimationComplete);
-            instance.$mount();
-            that.$refs.displayContainer.appendChild(
-              document.createElement("br")
-            );
-            that.$refs.displayContainer.appendChild(instance.$el);
-          });
+        this.getNextMessage(this.currentMessage.nextMessageId);
       }
     },
     setAnimationComplete: function() {
       this.animationComplete = true;
+    },
+    choiceSelected: function(choice) {
+      this.displayChoices = false;
+      this.animateText = true;
+      this.animationComplete = false;
+      var ComponentClass = Vue.extend(DisplayText);
+      var instance = new ComponentClass({
+        parent: this,
+        propsData: {
+          animateText: this.animateText,
+          skipText: this.$store.state.options.disableAnimation.value,
+          text: "[" + choice.content + "]"
+        }
+      });
+      instance.$on(events.animationComplete, this.setAnimationComplete);
+      instance.$mount();
+      this.$refs.displayContainer.appendChild(document.createElement("br"));
+      this.$refs.displayContainer.appendChild(instance.$el);
+      this.getNextMessage(choice.nextMessageId);
+    },
+    getNextMessage: function(nextMessageId) {
+      var that = this;
+      this.$store
+        .dispatch(actions.getNextMessage, nextMessageId)
+        .then(function() {
+          that.animateText = true;
+          that.animationComplete = false;
+          var ComponentClass = Vue.extend(DisplayText);
+          var instance = new ComponentClass({
+            parent: that,
+            propsData: {
+              animateText: that.animateText,
+              skipText: that.$store.state.options.disableAnimation.value,
+              text: that.currentMessage.content
+            }
+          });
+          instance.$on(events.animationComplete, that.setAnimationComplete);
+          instance.$mount();
+          that.$refs.displayContainer.appendChild(document.createElement("br"));
+          that.$refs.displayContainer.appendChild(instance.$el);
+        });
     }
   }
 };

@@ -8,13 +8,6 @@ import addTransitionListener from "../helpers/addTransitionListener";
 export default {
   name: "DisplayText",
   props: ["animateText", "skipText", "text"],
-  //   data: function() {
-  //     return {
-  //       text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nibh justo, cursus non lacus id, cursus scelerisque nulla. Vestibulum id lectus eu sapien pulvinar venenatis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse lobortis elit augue, in lobortis risus gravida dapibus. Pellentesque vitae mollis est. Praesent eu ligula a mauris porta euismod. Vivamus porta ante mauris, vitae aliquam tellus sodales at. Vestibulum mollis rutrum elementum. Nunc dapibus porttitor urna, ut iaculis metus fringilla non.
-
-  // Sed non ligula id ex rutrum porta. Cras vel ultrices nisl. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed nec neque nec quam placerat gravida a vel ligula. Donec elit urna, vulputate sit amet hendrerit et, iaculis ut nunc. Praesent arcu libero, fermentum eu cursus sit amet, rutrum vel felis. Ut aliquam ut ante in sollicitudin. Mauris in aliquam ex.`
-  //     };
-  //   },
   watch: {
     animateText: function() {
       if (this.animateText == false) {

@@ -1,18 +1,23 @@
-[{
+[
+    {
         "id": 1,
         "previousMessageId": 3,
         "content": "Look closer out of the window",
-        "nextMessageId": 4
+        "nextMessageId": 4,
+        "ordinal": 1
     },
     {
         "id": 2,
         "previousMessageId": 3,
         "content": "Investigate the room",
-        "nextMessageId": 5
-    }, {
+        "nextMessageId": 5,
+        "ordinal": 2
+    },
+    {
         "id": 3,
         "previousMessageId": 3,
         "content": "Try to go back to sleep",
-        "nextMessageId": 6
+        "nextMessageId": 6,
+        "ordinal": 3
     }
 ]

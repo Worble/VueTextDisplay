@@ -5,7 +5,7 @@ import choices from './choices.json';
 const db = new Dexie('storyDb');
 db.version(1).stores({
     messages: `id, content, nextMessageId`,
-    choices: `id, previousMessageId, content, nextMessageId`
+    choices: `id, previousMessageId, content, nextMessageId, ordinal`
 });
 db.messages.bulkPut(messages);
 db.choices.bulkPut(choices);

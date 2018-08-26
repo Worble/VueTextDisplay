@@ -34,7 +34,6 @@ const actions = {
   getNextMessage: async ({ commit }, nextMessageId) => {
     var message = await db.messages.get(nextMessageId);
     message.choices = await db.choices.where('previousMessageId').equals(message.id).toArray();
-    console.log(message);
     commit('changeCurrentMessage', message);
   }
 }
