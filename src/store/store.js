@@ -22,9 +22,6 @@ const mutations = {
   },
   changeCurrentMessage(state, message) {
     state.currentMessage = message;
-  },
-  changeNextMessage(state, message) {
-    state.nextMessage = message;
   }
 }
 
@@ -34,6 +31,9 @@ const actions = {
   getNextMessage: async ({ commit }, nextMessageId) => {
     var message = await db.messages.get(nextMessageId);
     message.choices = await db.choices.where('previousMessageId').equals(message.id).toArray();
+    commit('changeCurrentMessage', message);
+  },
+  changeCurrentMessage: ({ commit }, message) => {
     commit('changeCurrentMessage', message);
   }
 }

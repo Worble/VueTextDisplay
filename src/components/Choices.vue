@@ -37,7 +37,8 @@ export default {
     //     }, this.$refs.modal);
     //   }
     // },
-    moveUp: function() {
+    moveUp: function(e) {
+      e.preventDefault();
       var activeButton = document.getElementsByClassName("active")[0];
       activeButton.classList.remove("active");
       var sibling = activeButton.nextSibling;
@@ -47,7 +48,8 @@ export default {
         document.getElementsByClassName("selection")[0].classList.add("active");
       }
     },
-    moveDown: function() {
+    moveDown: function(e) {
+      e.preventDefault();
       var activeButton = document.getElementsByClassName("active")[0];
       activeButton.classList.remove("active");
       var sibling = activeButton.previousSibling;

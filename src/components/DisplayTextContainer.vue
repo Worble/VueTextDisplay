@@ -47,7 +47,10 @@ export default {
     onEnter: function() {
       if (!this.animationComplete) {
         this.animateText = !this.animateText;
-      } else if (this.currentMessage.choices.length > 0) {
+      } else if (
+        this.currentMessage.choices &&
+        this.currentMessage.choices.length > 0
+      ) {
         this.displayChoices = true;
       } else {
         this.getNextMessage(this.currentMessage.nextMessageId);
@@ -56,7 +59,7 @@ export default {
     setAnimationComplete: function() {
       this.animationComplete = true;
     },
-    choiceSelected: function(choice) {
+    appendText: function(text) {
       this.displayChoices = false;
       this.animateText = true;
       this.animationComplete = false;
@@ -66,35 +69,29 @@ export default {
         propsData: {
           animateText: this.animateText,
           skipText: this.$store.state.options.disableAnimation.value,
-          text: "[" + choice.content + "]"
+          text: text
         }
       });
       instance.$on(events.animationComplete, this.setAnimationComplete);
       instance.$mount();
       this.$refs.displayContainer.appendChild(document.createElement("br"));
       this.$refs.displayContainer.appendChild(instance.$el);
-      this.getNextMessage(choice.nextMessageId);
+    },
+    choiceSelected: function(choice) {
+      document.getElementById("focus").focus();
+      this.$store.dispatch(actions.changeCurrentMessage, {
+        content: "[" + choice.content + "]",
+        nextMessageId: choice.nextMessageId
+      });
+      this.appendText(this.currentMessage.content);
+      //this.getNextMessage(choice.nextMessageId);
     },
     getNextMessage: function(nextMessageId) {
       var that = this;
       this.$store
         .dispatch(actions.getNextMessage, nextMessageId)
         .then(function() {
-          that.animateText = true;
-          that.animationComplete = false;
-          var ComponentClass = Vue.extend(DisplayText);
-          var instance = new ComponentClass({
-            parent: that,
-            propsData: {
-              animateText: that.animateText,
-              skipText: that.$store.state.options.disableAnimation.value,
-              text: that.currentMessage.content
-            }
-          });
-          instance.$on(events.animationComplete, that.setAnimationComplete);
-          instance.$mount();
-          that.$refs.displayContainer.appendChild(document.createElement("br"));
-          that.$refs.displayContainer.appendChild(instance.$el);
+          that.appendText(that.currentMessage.content);
         });
     }
   }

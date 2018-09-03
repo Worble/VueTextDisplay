@@ -1,5 +1,4 @@
-[
-    {
+[{
         "id": 1,
         "content": "The first thing you notice is the sound of rain lashing against the window.",
         "nextMessageId": 2
@@ -15,14 +14,20 @@
     },
     {
         "id": 4,
-        "content": "Leaving the comfort of your bed, you sweep over the window and peer out into the muted morning sunlight."
+        "content": "Leaving the comfort of your bed, you sweep over the window and peer out into the muted morning sunlight.",
+        "nextMessageId": 7
     },
     {
         "id": 5,
-        "content": "Gazing over the room, you can still see the faint glow of coals from the fireplace in your bedroom."
+        "content": "Gazing over the room, you can still see the faint glow of coals from the fireplace in your bedroom.\n\nAll is just as you had left it the night before, and nothing seemed particularly amiss."
     },
     {
         "id": 6,
         "content": "Closing your eyes, you let the rythmic sound of rain ease you back into sleep."
+    },
+    {
+        "id": 7,
+        "content": "Although you can just about make out the sound of birdsong, it still too early for there to be anything of interest out.\n\nThe cobbled streets below lazily reflect the arched buildings above them as puddles form on it's surface.\n\nYou cannot recognise what might have woken you from your slumber, if anything had done so at all. You swiftly return to your bed, longing for its warm embrace.",
+        "nextMessageId": 6
     }
 ]

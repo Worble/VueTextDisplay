@@ -1,7 +1,8 @@
 const actions = {
     changeAnimationSpeed: "changeAnimationSpeed",
     toggleDisableAnimation: "toggleDisableAnimation",
-    getNextMessage: "getNextMessage"
+    getNextMessage: "getNextMessage",
+    changeCurrentMessage: "changeCurrentMessage"
 };
 
 export default actions;

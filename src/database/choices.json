@@ -1,5 +1,4 @@
-[
-    {
+[{
         "id": 1,
         "previousMessageId": 3,
         "content": "Look closer out of the window",
@@ -19,5 +18,19 @@
         "content": "Try to go back to sleep",
         "nextMessageId": 6,
         "ordinal": 3
+    },
+    {
+        "id": 4,
+        "previousMessageId": 5,
+        "content": "Investigate further",
+        "nextMessageId": 7,
+        "ordinal": 1
+    },
+    {
+        "id": 5,
+        "previousMessageId": 5,
+        "content": "Decide it was nothing at all",
+        "nextMessageId": 4,
+        "ordinal": 2
     }
 ]

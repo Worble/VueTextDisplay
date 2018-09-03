@@ -18,7 +18,7 @@ import actions from "../constants/actions";
 import addTransitionListener from "../helpers/addTransitionListener";
 
 export default {
-  name: "OptionsContainer",
+  name: "OptionsMenu",
   methods: {
     onClick: function(event) {
       if (!event.target.closest(".modal")) {
