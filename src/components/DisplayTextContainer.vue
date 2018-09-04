@@ -10,7 +10,7 @@
             </svg>
         </div>
         <div v-if="displayChoices">
-          <Choices v-on:choice-selected="choiceSelected"/>
+          <Choices v-on:choice-selected="choiceSelected" v-on:close-choices-menu="closeChoicesMenu"/>
         </div>
     </div>
 </template>
@@ -51,6 +51,7 @@ export default {
         this.currentMessage.choices &&
         this.currentMessage.choices.length > 0
       ) {
+        this.$emit(events.addNoScroll);
         this.displayChoices = true;
       } else {
         this.getNextMessage(this.currentMessage.nextMessageId);
@@ -77,7 +78,12 @@ export default {
       this.$refs.displayContainer.appendChild(document.createElement("br"));
       this.$refs.displayContainer.appendChild(instance.$el);
     },
+    closeChoicesMenu: function() {
+      this.$emit(events.removeNoScroll);
+      this.displayChoices = false;
+    },
     choiceSelected: function(choice) {
+      this.$emit(events.removeNoScroll);
       document.getElementById("focus").focus();
       this.$store.dispatch(actions.changeCurrentMessage, {
         content: "[" + choice.content + "]",
@@ -105,7 +111,9 @@ export default {
   flex-direction: column;
 }
 .read-more {
-  float: right;
+  position: fixed;
+  right: 15px;
+  bottom: 10px;
   animation: rotate 1s infinite linear;
 }
 

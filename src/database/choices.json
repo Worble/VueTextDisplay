@@ -23,14 +23,14 @@
         "id": 4,
         "previousMessageId": 5,
         "content": "Investigate further",
-        "nextMessageId": 7,
+        "nextMessageId": 4,
         "ordinal": 1
     },
     {
         "id": 5,
         "previousMessageId": 5,
         "content": "Decide it was nothing at all",
-        "nextMessageId": 4,
+        "nextMessageId": 6,
         "ordinal": 2
     }
 ]

@@ -38,16 +38,24 @@ export default {
       this.$store.dispatch(actions.getNextMessage, 1).then(function() {
         var ComponentClass = Vue.extend(DisplayTextContainer);
         var instance = new ComponentClass({ parent: that });
+        instance.$on(events.addNoScroll, that.addNoScroll);
+        instance.$on(events.removeNoScroll, that.removeNoScroll);
         instance.$mount(that.$refs.main);
       });
     },
     openSettingsMenu: function() {
-      this.$refs.app.classList.add("no-scroll");
+      this.addNoScroll();
       this.showOptionsModal = true;
     },
     closeSettingsMenu: function() {
-      this.$refs.app.classList.remove("no-scroll");
+      this.removeNoScroll();
       this.showOptionsModal = false;
+    },
+    addNoScroll: function() {
+      this.$refs.app.classList.add("no-scroll");
+    },
+    removeNoScroll: function() {
+      this.$refs.app.classList.remove("no-scroll");
     }
   }
 };

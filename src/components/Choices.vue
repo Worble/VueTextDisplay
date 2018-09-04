@@ -1,5 +1,5 @@
 <template>
-    <div ref="focus" class="modal-container" @keydown.40="moveUp" @keydown.38="moveDown" tabIndex="0" @keydown.13="onEnter">
+    <div ref="focus" class="modal-container" @keydown.40="moveUp" @keydown.38="moveDown" tabIndex="0" @keydown.13="onEnter"  @click="clickOff">
         <div ref="modal" class="modal">
           <div v-for="choice in choices" :key="choice.id" class="selection" v-bind:class="{ active: choice.active }" v-bind:data-id="choice.id" v-on:click="onChoiceClick" v-on:mouseover="choiceHover">
             {{choice.content}}
@@ -27,16 +27,15 @@ export default {
     this.$refs.focus.focus();
   },
   methods: {
-    //TODO: close modal on click off/some button press
-    // onClick: function(event) {
-    //   if (!event.target.closest(".modal")) {
-    //     this.$refs.modal.classList.add("close");
-    //     var that = this;
-    //     addTransitionListener(function() {
-    //       that.$emit(events.closeModal);
-    //     }, this.$refs.modal);
-    //   }
-    // },
+    clickOff: function(event) {
+      if (!event.target.closest(".modal")) {
+        this.$refs.modal.classList.add("close");
+        var that = this;
+        addTransitionListener(function() {
+          that.$emit(events.closeChoicesModal);
+        }, this.$refs.modal);
+      }
+    },
     moveUp: function(e) {
       e.preventDefault();
       var activeButton = document.getElementsByClassName("active")[0];
@@ -62,24 +61,19 @@ export default {
     },
     onEnter: function() {
       var activeButton = document.getElementsByClassName("active")[0];
-      var choice = this.choices.find(
-        choice => choice.id == activeButton.dataset.id
-      );
-      this.selectChoice(choice);
+      this.selectChoice(activeButton.dataset.id);
     },
     onChoiceClick: function(e) {
-      var choice = this.choices.find(
-        choice => choice.id == e.target.dataset.id
-      );
-      this.selectChoice(choice);
+      this.selectChoice(e.target.dataset.id);
     },
-    selectChoice(choice) {
+    selectChoice(id) {
+      var choice = this.choices.find(choice => choice.id == id);
       var that = this;
-      var activeChoice = this.$refs.modal;
+      var modal = this.$refs.modal;
       addTransitionListener(function() {
         that.$emit(events.choiceSelected, choice);
-      }, activeChoice);
-      activeChoice.classList.add("close");
+      }, modal);
+      modal.classList.add("close");
     },
     choiceHover(e) {
       if (!e.target.classList.contains("active")) {

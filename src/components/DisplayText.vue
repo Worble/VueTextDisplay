@@ -49,9 +49,11 @@ export default {
       el.appendChild(node);
       this.$emit(events.animationComplete);
     }
+    var disableScrollAnimation = this.$store.state.options
+      .disableScrollAnimation;
     this.$nextTick(() =>
       el.scrollIntoView({
-        behavior: "smooth",
+        behavior: disableScrollAnimation ? "instant" : "smooth",
         block: "start",
         inline: "nearest"
       })

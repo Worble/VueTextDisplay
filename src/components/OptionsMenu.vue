@@ -8,6 +8,10 @@
             <div>
               {{$store.state.options.disableAnimation.name}}: <input type="checkbox" :value="$store.state.options.disableAnimation.value" :checked="$store.state.options.disableAnimation.value" v-on:change="handleDisableAnimationChange"/>
             </div>
+            <br/>
+            <div>
+              {{$store.state.options.disableScrollAnimation.name}}: <input type="checkbox" :value="$store.state.options.disableScrollAnimation.value" :checked="$store.state.options.disableScrollAnimation.value" v-on:change="handleDisableScrollAnimationChange"/>
+            </div>
         </div>
     </div>
 </template>
@@ -25,7 +29,7 @@ export default {
         this.$refs.modal.classList.add("close");
         var that = this;
         addTransitionListener(function() {
-          that.$emit(events.closeModal);
+          that.$emit(events.closeSettingsModal);
         }, this.$refs.modal);
       }
     },
@@ -37,6 +41,9 @@ export default {
     },
     handleDisableAnimationChange: function() {
       this.$store.dispatch(actions.toggleDisableAnimation);
+    },
+    handleDisableScrollAnimationChange: function() {
+      this.$store.dispatch(actions.toggleDisableScrollAnimation);
     }
   }
 };
