@@ -26,13 +26,25 @@ const mutations = {
   },
   changeCurrentMessage(state, message) {
     state.currentMessage = message;
+  },
+  restoreOptions(state, options) {
+    state.options = options;
   }
 }
 
 const actions = {
-  changeAnimationSpeed: ({ commit }, speed) => commit('changeAnimationSpeed', speed),
-  toggleDisableAnimation: ({ commit }) => commit('toggleDisableAnimation'),
-  toggleDisableScrollAnimation: ({ commit }) => commit('toggleDisableScrollAnimation'),
+  changeAnimationSpeed: ({ commit }, speed) => {
+    commit('changeAnimationSpeed', speed);
+    localStorage.setItem('options', JSON.stringify(state.options));
+  },
+  toggleDisableAnimation: ({ commit }) => {
+    commit('toggleDisableAnimation');
+    localStorage.setItem('options', JSON.stringify(state.options));
+  },
+  toggleDisableScrollAnimation: ({ commit }) => {
+    commit('toggleDisableScrollAnimation');
+    localStorage.setItem('options', JSON.stringify(state.options));
+  },
   getNextMessage: async ({ commit }, nextMessageId) => {
     var message = await db.messages.get(nextMessageId);
     message.choices = await db.choices.where('previousMessageId').equals(message.id).toArray();
@@ -40,6 +52,12 @@ const actions = {
   },
   changeCurrentMessage: ({ commit }, message) => {
     commit('changeCurrentMessage', message);
+  },
+  restoreOptions: ({ commit }) => {
+    var options = localStorage.getItem('options');
+    if (options) {
+      commit('restoreOptions', JSON.parse(options));
+    }
   }
 }
 

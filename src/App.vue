@@ -32,6 +32,9 @@ export default {
       showOptionsModal: false
     };
   },
+  created: function() {
+    this.$store.dispatch(actions.restoreOptions);
+  },
   methods: {
     handleStartNew: function() {
       var that = this;
