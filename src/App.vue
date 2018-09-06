@@ -55,10 +55,10 @@ export default {
       this.showOptionsModal = false;
     },
     addNoScroll: function() {
-      this.$refs.app.classList.add("no-scroll");
+      document.body.classList.add("no-scroll");
     },
     removeNoScroll: function() {
-      this.$refs.app.classList.remove("no-scroll");
+      document.body.classList.remove("no-scroll");
     }
   }
 };
@@ -78,9 +78,9 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  margin: 15px 35px;
   display: block;
   position: absolute;
+  margin: 15px 35px;
 }
 
 .container {
