@@ -7,6 +7,9 @@
       <div v-if="this.showOptionsModal">
         <OptionsMenu v-on:close-settings-menu="closeSettingsMenu" />
       </div>
+      <div class="game-save" ref="gameSave">
+        Game Saved
+      </div>
     </div>
     <SideBar v-on:options-menu-clicked="this.openSettingsMenu" v-on:save-icon-clicked="saveIconClicked"/>
   </div>
@@ -69,7 +72,13 @@ export default {
     saveIconClicked: function() {
       var id = this.$store.state.currentMessage.id;
       if (id) {
+        this.$refs.gameSave.style.transitionDuration = "0s";
         localStorage.setItem("save", id);
+        this.$refs.gameSave.style.opacity = 1;
+        this.$nextTick(function() {
+          this.$refs.gameSave.style.transitionDuration = "2s";
+          this.$refs.gameSave.style.opacity = 0;
+        });
       }
     }
   }
@@ -106,5 +115,20 @@ body {
 
 .no-scroll {
   overflow: hidden;
+}
+
+.game-save {
+  opacity: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 7px 15px;
+  margin: 10px 20px;
+  border: solid white 1px;
+  border-radius: 3px;
+  text-align: center;
+  z-index: 10;
+  background: black;
 }
 </style>
