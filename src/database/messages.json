@@ -23,7 +23,8 @@
     },
     {
         "id": 6,
-        "content": "Closing your eyes, you let the rythmic sound of rain ease you back into sleep."
+        "content": "Closing your eyes, you let the rythmic sound of rain ease you back into sleep.",
+        "nextMessageId": 8
     },
     {
         "id": 7,

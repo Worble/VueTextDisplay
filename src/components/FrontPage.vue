@@ -9,6 +9,7 @@
 
 <script>
 import events from "../constants/events";
+import actions from "../constants/actions";
 import addTransitionListener from "../helpers/addTransitionListener";
 
 export default {
@@ -43,18 +44,20 @@ export default {
         this.onLoad();
       }
     },
-    onNew() {
+    onNew: function() {
       var that = this;
       this.exitAnimation(function() {
         that.$emit(events.startNew);
       });
     },
-    onLoad() {
-      var getStart = Number.parseInt(localStorage.getItem("save"));
-      if (getStart) {
+    onLoad: async function() {
+      var save = JSON.parse(localStorage.getItem("save"));
+      if (save) {
+        await this.$store.dispatch(actions.setGameId, save.gameId);
+        await this.$store.dispatch(actions.loadEffects);
         var that = this;
         this.exitAnimation(function() {
-          that.$emit(events.load, getStart);
+          that.$emit(events.load, save.messageId);
         });
       } else {
         alert("No save to load!");

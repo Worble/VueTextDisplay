@@ -10,6 +10,8 @@ const state = {
     disableAnimation: { name: "Disable All Text Animation", value: false },
     disableScrollAnimation: { name: "Disable Scroll Animation", value: false }
   },
+  effects: [],
+  gameId: null,
   currentMessage: { id: null, content: null, nextMessageId: null }
 }
 
@@ -28,6 +30,19 @@ const mutations = {
   },
   restoreOptions(state, options) {
     state.options = options;
+  },
+  setGameId(state, id) {
+    state.gameId = id;
+  },
+  loadEffects(state, effects) {
+    state.effects = effects;
+  },
+  editEffect(state, effect) {
+    var index = state.effects.findIndex((stateEffect) => { return stateEffect.name == effect.name });
+    state.effects[index] = effect;
+  },
+  addEffect(state, effect) {
+    state.effects.push(effect);
   }
 }
 
@@ -57,6 +72,51 @@ const actions = {
     if (options) {
       commit('restoreOptions', JSON.parse(options));
     }
+  },
+  loadEffects: async ({ commit }) => {
+    var effects = await db.effects.where({ gameId: state.gameId }).toArray();
+    if (effects) {
+      commit('loadEffects', effects)
+    }
+  },
+  saveEffects: async ({ commit }) => {
+    await db.effects.bulkPut(state.effects);
+  },
+  applyEffect: async ({ commit }, effect) => {
+    if (state.effects) {
+      var stateEffect = state.effects.find((stateEffect) => { return stateEffect.name == effect.name });
+    }
+    switch (effect.effectType.toLowerCase()) {
+      case "increment":
+        if (stateEffect) {
+          stateEffect.value += effect.value;
+          commit('editEffect', stateEffect);
+        } else {
+          commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
+        }
+        break;
+      case "decrement":
+        if (stateEffect) {
+          stateEffect.value -= effect.value;
+          commit('editEffect', stateEffect);
+        } else {
+          commit('addEffect', { name: effect.name, value: -effect.value, gameId: state.gameId })
+        }
+        break;
+      case "set":
+        if (stateEffect) {
+          stateEffect.value = effect.value;
+          commit('editEffect', stateEffect);
+        } else {
+          commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
+        }
+        break;
+      default:
+        console.log("Default effectType hit; this should never happen");
+    }
+  },
+  setGameId: ({ commit }, id) => {
+    commit('setGameId', id);
   }
 }
 

@@ -20,10 +20,10 @@ import FrontPage from "./components/FrontPage.vue";
 import DisplayTextContainer from "./components/DisplayTextContainer.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
 import SideBar from "./components/Sidebar.vue";
-
 import Vue from "vue";
 import events from "./constants/events";
 import actions from "./constants/actions";
+import generateGuid from "./helpers/generateGuid";
 
 export default {
   name: "app",
@@ -43,6 +43,8 @@ export default {
   },
   methods: {
     handleStartNew: function() {
+      var guid = generateGuid();
+      this.$store.dispatch(actions.setGameId, guid);
       this.handleStart(1);
     },
     handleStart: function(id) {
@@ -69,16 +71,22 @@ export default {
     removeNoScroll: function() {
       document.body.classList.remove("no-scroll");
     },
-    saveIconClicked: function() {
+    saveIconClicked: async function() {
       var id = this.$store.state.currentMessage.id;
-      if (id) {
+      var gameId = this.$store.state.gameId;
+      if (id && gameId) {
+        await this.$store.dispatch(actions.saveEffects);
+        localStorage.setItem(
+          "save",
+          JSON.stringify({ gameId: gameId, messageId: id })
+        );
         this.$refs.gameSave.style.transitionDuration = "0s";
-        localStorage.setItem("save", id);
         this.$refs.gameSave.style.opacity = 1;
-        this.$nextTick(function() {
-          this.$refs.gameSave.style.transitionDuration = "2s";
-          this.$refs.gameSave.style.opacity = 0;
-        });
+        var that = this;
+        window.setTimeout(function() {
+          that.$refs.gameSave.style.transitionDuration = "2s";
+          that.$refs.gameSave.style.opacity = 0;
+        }, 100);
       }
     }
   }

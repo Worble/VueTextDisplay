@@ -60,7 +60,7 @@ export default {
     setAnimationComplete: function() {
       this.animationComplete = true;
     },
-    appendText: function(text) {
+    appendText: function(text, clear) {
       this.displayChoices = false;
       this.animateText = true;
       this.animationComplete = false;
@@ -74,9 +74,13 @@ export default {
         }
       });
       instance.$on(events.animationComplete, this.setAnimationComplete);
-      instance.$mount();
-      this.$refs.displayContainer.appendChild(document.createElement("br"));
-      this.$refs.displayContainer.appendChild(instance.$el);
+      if (clear) {
+        instance.$mount(this.$refs.displayContainer);
+      } else {
+        instance.$mount();
+        this.$refs.displayContainer.appendChild(document.createElement("br"));
+        this.$refs.displayContainer.appendChild(instance.$el);
+      }
     },
     closeChoicesMenu: function() {
       this.$emit(events.removeNoScroll);
@@ -85,7 +89,11 @@ export default {
     choiceSelected: function(choice) {
       this.$emit(events.removeNoScroll);
       this.$refs.container.focus();
+      if (choice.effect) {
+        this.$store.dispatch(actions.applyEffect, choice.effect);
+      }
       this.$store.dispatch(actions.changeCurrentMessage, {
+        id: choice.nextMessageId,
         content: "[" + choice.content + "]",
         nextMessageId: choice.nextMessageId
       });
