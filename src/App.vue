@@ -1,12 +1,14 @@
 <template>
-  <div ref="app" id="app">
-    <div ref="main" class="container">
-      <FrontPage v-on:start-new="handleStartNew"/>
+  <div>
+    <div ref="app" id="app">
+      <div ref="main" class="container">
+        <FrontPage v-on:start-new="handleStartNew" v-on:load="handleStart"/>
+      </div>
+      <div v-if="this.showOptionsModal">
+        <OptionsMenu v-on:close-settings-menu="closeSettingsMenu" />
+      </div>
     </div>
-    <OptionsMenuIcon v-on:options-menu-clicked="this.openSettingsMenu"/>
-    <div v-if="this.showOptionsModal">
-      <OptionsMenu v-on:close-settings-menu="closeSettingsMenu"/>
-    </div>
+    <SideBar v-on:options-menu-clicked="this.openSettingsMenu" v-on:save-icon-clicked="saveIconClicked"/>
   </div>
 </template>
 
@@ -14,7 +16,8 @@
 import FrontPage from "./components/FrontPage.vue";
 import DisplayTextContainer from "./components/DisplayTextContainer.vue";
 import OptionsMenu from "./components/OptionsMenu.vue";
-import OptionsMenuIcon from "./components/OptionsMenuIcon";
+import SideBar from "./components/Sidebar.vue";
+
 import Vue from "vue";
 import events from "./constants/events";
 import actions from "./constants/actions";
@@ -24,8 +27,8 @@ export default {
   components: {
     FrontPage,
     DisplayTextContainer,
-    OptionsMenuIcon,
-    OptionsMenu
+    OptionsMenu,
+    SideBar
   },
   data: function() {
     return {
@@ -37,8 +40,11 @@ export default {
   },
   methods: {
     handleStartNew: function() {
+      this.handleStart(1);
+    },
+    handleStart: function(id) {
       var that = this;
-      this.$store.dispatch(actions.getNextMessage, 1).then(function() {
+      this.$store.dispatch(actions.getNextMessage, id).then(function() {
         var ComponentClass = Vue.extend(DisplayTextContainer);
         var instance = new ComponentClass({ parent: that });
         instance.$on(events.addNoScroll, that.addNoScroll);
@@ -59,6 +65,12 @@ export default {
     },
     removeNoScroll: function() {
       document.body.classList.remove("no-scroll");
+    },
+    saveIconClicked: function() {
+      var id = this.$store.state.currentMessage.id;
+      if (id) {
+        localStorage.setItem("save", id);
+      }
     }
   }
 };

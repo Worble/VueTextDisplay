@@ -1,6 +1,6 @@
 <template>
-    <div class="options-menu" v-on:click="this.onClick">
-      <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    <div class="options-icon-container" v-on:click="this.onClick">
+      <svg  class="options-icon" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
         viewBox="0 0 478.703 478.703" style="fill:white" xml:space="preserve">
         <g>
             <path d="M454.2,189.101l-33.6-5.7c-3.5-11.3-8-22.2-13.5-32.6l19.8-27.7c8.4-11.8,7.1-27.9-3.2-38.1l-29.8-29.8
@@ -44,17 +44,17 @@ export default {
 </script>
 
 <style>
-.options-menu {
-  top: 0;
-  right: 0;
+.options-icon-container {
+  display: flex;
+}
+.options-icon {
   cursor: pointer;
   height: 30px;
   width: 30px;
-  position: fixed;
   opacity: 0.3;
   transition: 0.2s;
 }
-.options-menu:hover {
+.options-icon:hover {
   opacity: 1;
 }
 </style>

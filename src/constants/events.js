@@ -7,7 +7,8 @@ const events = {
     choiceSelected: "choice-selected",
     closeChoicesModal: "close-choices-menu",
     addNoScroll: "add-no-scroll",
-    removeNoScroll: "remove-no-scroll"
+    removeNoScroll: "remove-no-scroll",
+    saveIconClicked: "save-icon-clicked"
 };
 
 export default events;

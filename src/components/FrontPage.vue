@@ -1,5 +1,5 @@
 <template>
-<div id="focus" class="container" @keydown.40="moveUp" @keydown.38="moveDown" @keydown.13="onEnter" tabIndex="0">
+<div ref="container" class="container" @keydown.40="moveUp" @keydown.38="moveDown" @keydown.13="onEnter" tabIndex="0">
   <div class="main-menu">
     <div class="button active" v-on:click="onNew">Start</div>
     <div class="button" v-on:click="onLoad">Load</div>
@@ -24,7 +24,6 @@ export default {
         document.getElementsByClassName("button")[0].classList.add("active");
       }
     },
-
     moveDown: function() {
       var activeButton = document.getElementsByClassName("active")[0];
       activeButton.classList.remove("active");
@@ -36,7 +35,6 @@ export default {
         buttons[buttons.length - 1].classList.add("active");
       }
     },
-
     onEnter: function() {
       var activeButton = document.getElementsByClassName("active")[0];
       if (activeButton.innerHTML == "Start") {
@@ -45,21 +43,23 @@ export default {
         this.onLoad();
       }
     },
-
     onNew() {
       var that = this;
       this.exitAnimation(function() {
         that.$emit(events.startNew);
       });
     },
-
     onLoad() {
-      var that = this;
-      this.exitAnimation(function() {
-        that.$emit(events.load);
-      });
+      var getStart = Number.parseInt(localStorage.getItem("save"));
+      if (getStart) {
+        var that = this;
+        this.exitAnimation(function() {
+          that.$emit(events.load, getStart);
+        });
+      } else {
+        alert("No save to load!");
+      }
     },
-
     exitAnimation(callback) {
       var activeButton = document.getElementsByClassName("active")[0];
       addTransitionListener(callback, activeButton);
@@ -70,7 +70,7 @@ export default {
     }
   },
   mounted: function() {
-    document.getElementById("focus").focus();
+    this.$refs.container.focus();
   }
 };
 </script>

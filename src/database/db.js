@@ -7,7 +7,9 @@ db.version(1).stores({
     messages: `id, content, nextMessageId`,
     choices: `id, previousMessageId, content, nextMessageId, ordinal`
 });
-db.messages.bulkPut(messages);
-db.choices.bulkPut(choices);
+db.on("populate", function () {
+    db.messages.bulkPut(messages);
+    db.choices.bulkPut(choices);
+});
 
 export default db;

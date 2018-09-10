@@ -1,5 +1,5 @@
 <template>
-    <div ref="container" id="focus" class="container" tabIndex="0" @keydown.13="onEnter" v-on:click="onEnter">
+    <div ref="container" class="container" tabIndex="0" @keydown.13="onEnter" v-on:click="onEnter">
         <div ref="displayContainer">
             <DisplayText :animateText=animateText :skipText=this.$store.state.options.disableAnimation.value v-on:animation-complete="setAnimationComplete" :text="currentMessage.content" />
         </div>
@@ -41,7 +41,7 @@ export default {
     }
   },
   mounted() {
-    document.getElementById("focus").focus();
+    this.$refs.container.focus();
   },
   methods: {
     onEnter: function() {
@@ -84,13 +84,12 @@ export default {
     },
     choiceSelected: function(choice) {
       this.$emit(events.removeNoScroll);
-      document.getElementById("focus").focus();
+      this.$refs.container.focus();
       this.$store.dispatch(actions.changeCurrentMessage, {
         content: "[" + choice.content + "]",
         nextMessageId: choice.nextMessageId
       });
       this.appendText(this.currentMessage.content);
-      //this.getNextMessage(choice.nextMessageId);
     },
     getNextMessage: function(nextMessageId) {
       var that = this;

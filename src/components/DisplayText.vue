@@ -50,7 +50,7 @@ export default {
       this.$emit(events.animationComplete);
     }
     var disableScrollAnimation = this.$store.state.options
-      .disableScrollAnimation;
+      .disableScrollAnimation.value;
     this.$nextTick(() =>
       el.scrollIntoView({
         behavior: disableScrollAnimation ? "instant" : "smooth",

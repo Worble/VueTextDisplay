@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import remotedev from 'vuex-remotedev'
 import db from '../database/db';
 
 Vue.use(Vuex)
@@ -70,7 +69,5 @@ const store = new Vuex.Store({
   actions,
   mutations
 });
-
-remotedev(store)
 
 export default store;
