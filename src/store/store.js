@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import db from '../database/db';
+import { prototype } from 'pretty-error';
 
 Vue.use(Vuex)
 
@@ -60,8 +61,41 @@ const actions = {
     localStorage.setItem('options', JSON.stringify(state.options));
   },
   getNextMessage: async ({ commit }, nextMessageId) => {
-    var message = await db.messages.get(nextMessageId);
-    message.choices = await db.choices.where('previousMessageId').equals(message.id).toArray();
+    async function getMessage(nextId) {
+      var messagePrerequisiteFailed = false;
+      message = await db.messages.get(nextId);
+      if (message.prerequisites) {
+        message.prerequisites.values.forEach(async (prerequisite) => {
+          var effect = state.effects.find((effect) => { return effect.name == prerequisite.name }) || { value: 0 }
+          if (!eval(effect.value + prerequisite.comparator + prerequisite.value)) {
+            messagePrerequisiteFailed = true;
+          }
+        })
+      }
+      if (messagePrerequisiteFailed) {
+        message = await getMessage(message.prerequisites.alternativeMessageId || message.nextMessageId);
+      }
+      return message;
+    }
+    var message = await getMessage(nextMessageId);
+    var choices = await db.choices.where('previousMessageId').equals(message.id).toArray();
+    message.choices = [];
+    if (choices) {
+      choices.forEach(function (choice) {
+        var choicePrerequisiteFailed = false;
+        if (choice.prerequisites) {
+          choice.prerequisites.values.forEach(async (prerequisite) => {
+            var effect = state.effects.find((effect) => { return effect.name == prerequisite.name }) || { value: 0 }
+            if (!eval(effect.value + prerequisite.comparator + prerequisite.value)) {
+              choicePrerequisiteFailed = true;
+            }
+          })
+        }
+        if (!choicePrerequisiteFailed) {
+          message.choices.push(choice)
+        }
+      });
+    }
     commit('changeCurrentMessage', message);
   },
   changeCurrentMessage: ({ commit }, message) => {
@@ -82,38 +116,41 @@ const actions = {
   saveEffects: async ({ commit }) => {
     await db.effects.bulkPut(state.effects);
   },
-  applyEffect: async ({ commit }, effect) => {
-    if (state.effects) {
-      var stateEffect = state.effects.find((stateEffect) => { return stateEffect.name == effect.name });
-    }
-    switch (effect.effectType.toLowerCase()) {
-      case "increment":
-        if (stateEffect) {
-          stateEffect.value += effect.value;
-          commit('editEffect', stateEffect);
-        } else {
-          commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
-        }
-        break;
-      case "decrement":
-        if (stateEffect) {
-          stateEffect.value -= effect.value;
-          commit('editEffect', stateEffect);
-        } else {
-          commit('addEffect', { name: effect.name, value: -effect.value, gameId: state.gameId })
-        }
-        break;
-      case "set":
-        if (stateEffect) {
-          stateEffect.value = effect.value;
-          commit('editEffect', stateEffect);
-        } else {
-          commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
-        }
-        break;
-      default:
-        console.log("Default effectType hit; this should never happen");
-    }
+  applyEffect: async ({ commit }, effects) => {
+    effects.forEach(function (effect) {
+      if (state.effects) {
+        var stateEffect = state.effects.find((stateEffect) => { return stateEffect.name == effect.name });
+      }
+      switch (effect.effectType.toLowerCase()) {
+        case "increment":
+          if (stateEffect) {
+            stateEffect.value += effect.value;
+            commit('editEffect', stateEffect);
+          } else {
+            commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
+          }
+          break;
+        case "decrement":
+          if (stateEffect) {
+            stateEffect.value -= effect.value;
+            commit('editEffect', stateEffect);
+          } else {
+            commit('addEffect', { name: effect.name, value: -effect.value, gameId: state.gameId })
+          }
+          break;
+        case "set":
+          if (stateEffect) {
+            stateEffect.value = effect.value;
+            commit('editEffect', stateEffect);
+          } else {
+            commit('addEffect', { name: effect.name, value: effect.value, gameId: state.gameId })
+          }
+          break;
+        default:
+          console.log("Default effectType hit; this should never happen");
+          break;
+      }
+    })
   },
   setGameId: ({ commit }, id) => {
     commit('setGameId', id);

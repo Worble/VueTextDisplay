@@ -75,12 +75,11 @@ export default {
       });
       instance.$on(events.animationComplete, this.setAnimationComplete);
       if (clear) {
-        instance.$mount(this.$refs.displayContainer);
-      } else {
-        instance.$mount();
-        this.$refs.displayContainer.appendChild(document.createElement("br"));
-        this.$refs.displayContainer.appendChild(instance.$el);
+        this.$refs.displayContainer.innerHTML = "";
       }
+      instance.$mount();
+      this.$refs.displayContainer.appendChild(document.createElement("br"));
+      this.$refs.displayContainer.appendChild(instance.$el);
     },
     closeChoicesMenu: function() {
       this.$emit(events.removeNoScroll);
@@ -89,22 +88,25 @@ export default {
     choiceSelected: function(choice) {
       this.$emit(events.removeNoScroll);
       this.$refs.container.focus();
-      if (choice.effect) {
-        this.$store.dispatch(actions.applyEffect, choice.effect);
+      if (choice.effects) {
+        this.$store.dispatch(actions.applyEffect, choice.effects);
       }
       this.$store.dispatch(actions.changeCurrentMessage, {
         id: choice.nextMessageId,
         content: "[" + choice.content + "]",
         nextMessageId: choice.nextMessageId
       });
-      this.appendText(this.currentMessage.content);
+      this.appendText(this.currentMessage.content, this.currentMessage.clear);
     },
     getNextMessage: function(nextMessageId) {
       var that = this;
       this.$store
         .dispatch(actions.getNextMessage, nextMessageId)
         .then(function() {
-          that.appendText(that.currentMessage.content);
+          that.appendText(
+            that.currentMessage.content,
+            that.currentMessage.clear
+          );
         });
     }
   }

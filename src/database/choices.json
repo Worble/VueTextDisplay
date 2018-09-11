@@ -4,11 +4,11 @@
         "content": "Look closer out of the window",
         "nextMessageId": 4,
         "ordinal": 1,
-        "effect": {
+        "effects": [{
             "name": "Actions",
             "effectType": "Increment",
             "value": 1
-        }
+        }]
     },
     {
         "id": 2,
@@ -16,11 +16,11 @@
         "content": "Investigate the room",
         "nextMessageId": 5,
         "ordinal": 2,
-        "effect": {
+        "effects": [{
             "name": "Actions",
             "effectType": "Increment",
             "value": 1
-        }
+        }]
     },
     {
         "id": 3,
@@ -28,11 +28,11 @@
         "content": "Try to go back to sleep",
         "nextMessageId": 6,
         "ordinal": 3,
-        "effect": {
+        "effects": [{
             "name": "Nonchalant",
             "effectType": "Set",
             "value": true
-        }
+        }]
     },
     {
         "id": 4,
@@ -40,17 +40,63 @@
         "content": "Investigate further",
         "nextMessageId": 4,
         "ordinal": 1,
-        "effect": {
+        "effects": [{
             "name": "Actions",
             "effectType": "increment",
             "value": 1
-        }
+        }]
     },
     {
         "id": 5,
         "previousMessageId": 5,
         "content": "Decide it was nothing at all",
         "nextMessageId": 6,
-        "ordinal": 2
+        "ordinal": 2,
+        "effects": [{
+                "name": "Nonchalant",
+                "effectType": "Set",
+                "value": true
+            },
+            {
+                "name": "Actions",
+                "effectType": "increment",
+                "value": 2
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "previousMessageId": 13,
+        "content": "This choice only shows if Nonchalant is set",
+        "nextMessageId": 14,
+        "ordinal": 1,
+        "prerequisites": {
+            "values": [{
+                "name": "Nonchalant",
+                "value": true,
+                "comparator": "=="
+            }]
+        }
+    },
+    {
+        "id": 7,
+        "previousMessageId": 13,
+        "content": "This choice only shows if actions is above 2",
+        "nextMessageId": 14,
+        "ordinal": 2,
+        "prerequisites": {
+            "values": [{
+                "name": "Actions",
+                "value": 2,
+                "comparator": ">="
+            }]
+        }
+    },
+    {
+        "id": 8,
+        "previousMessageId": 13,
+        "content": "This choice always shows",
+        "nextMessageId": 14,
+        "ordinal": 3
     }
 ]

@@ -30,5 +30,69 @@
         "id": 7,
         "content": "Although you can just about make out the sound of birdsong, it is still too early for there to be anything of interest out.\n\nThe cobbled streets below lazily reflect the arched buildings above them as puddles form on it's surface.\n\nYou cannot recognise what might have woken you from your slumber, if anything had done so at all. You swiftly return to your bed, longing for its warm embrace.",
         "nextMessageId": 6
+    },
+    {
+        "id": 8,
+        "clear": true,
+        "prerequisites": {
+            "values": [{
+                "name": "Actions",
+                "value": 2,
+                "comparator": ">="
+            }],
+            "alternativeMessageId": 9
+        },
+        "content": "You awake again. 8AM. 'Much better', you think to yourself; Although you still feel groggy after spending your night investigating what roused you from your sleep.",
+        "nextMessageId": 10
+    },
+    {
+        "clear": true,
+        "id": 9,
+        "content": "You awake again. 8 o'clock. 'Much better', you think to yourself. You swiftly rise from bed to greet the new day.",
+        "nextMessageId": 10
+    },
+    {
+        "id": 10,
+        "content": "You prepare yourself much the same as you always do; Grabbing your pristinely ironed suit you had laid out for yourself the night before, you quickly head to the nearby washbason to clean your face and get changed.",
+        "nextMessageId": 11
+    },
+    {
+        "id": 11,
+        "prerequisites": {
+            "values": [{
+                "name": "Nonchalant",
+                "value": true,
+                "comparator": "=="
+            }]
+        },
+        "content": "You will only see this is Nonchalant is set.",
+        "nextMessageId": 12
+    },
+    {
+        "id": 12,
+        "prerequisites": {
+            "values": [{
+                    "name": "Nonchalant",
+                    "value": true,
+                    "comparator": "=="
+                },
+                {
+                    "name": "Actions",
+                    "value": 2,
+                    "comparator": ">="
+                }
+            ]
+        },
+        "content": "You will only see this is Nonchalant is set and actions is greater than or equal to 2.",
+        "nextMessageId": 13
+    },
+    {
+        "id": 13,
+        "content": "After performing your morning duties, you head downstairs to fill your stomach before heading outside.",
+        "nextMessageId": 14
+    },
+    {
+        "id": 14,
+        "content": "DEBUG END"
     }
 ]
