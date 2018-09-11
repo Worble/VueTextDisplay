@@ -1,8 +1,8 @@
 <template>
 <div ref="container" class="container" @keydown.40="moveUp" @keydown.38="moveDown" @keydown.13="onEnter" tabIndex="0">
   <div class="main-menu">
-    <div class="button active" v-on:click="onNew">Start</div>
-    <div class="button" v-on:click="onLoad">Load</div>
+    <div class="button active" v-on:click="onNew" v-on:mouseover="hover">Start</div>
+    <div class="button" v-on:click="onLoad" v-on:mouseover="hover">Load</div>
   </div>
 </div>
 </template>
@@ -70,6 +70,13 @@ export default {
       [].forEach.call(buttons, function(el) {
         el.classList.add("leave");
       });
+    },
+    hover(e) {
+      if (!e.target.classList.contains("active")) {
+        var activeChoice = document.getElementsByClassName("active")[0];
+        activeChoice.classList.remove("active");
+        e.target.classList.add("active");
+      }
     }
   },
   mounted: function() {
