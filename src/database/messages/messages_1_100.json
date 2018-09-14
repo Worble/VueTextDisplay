@@ -1,7 +1,8 @@
 [{
         "id": 1,
         "content": "The first thing you notice is the sound of rain lashing against the window.",
-        "nextMessageId": 2
+        "nextMessageId": 2,
+        "clear": true
     },
     {
         "id": 2,
@@ -42,7 +43,7 @@
             }],
             "alternativeMessageId": 9
         },
-        "content": "You awake again. 8AM. 'Much better', you think to yourself; Although you still feel groggy after spending your night investigating what roused you from your sleep.",
+        "content": "You awake again. 8AM. 'Much better', you think to yourself, although you still feel groggy after spending your night investigating what roused you from your sleep.",
         "nextMessageId": 10
     },
     {
@@ -61,11 +62,11 @@
         "prerequisites": {
             "values": [{
                 "name": "Nonchalant",
-                "value": true,
+                "value": false,
                 "comparator": "=="
             }]
         },
-        "content": "You will only see this is Nonchalant is set.",
+        "content": "However, the feelings from last night still remain. It isn't common for your sleep to be interrupted like that, and, as you looked at your haggard reflection in the mirror, you knew the feeling that something wasn't right was going to remain with you throughout the day.",
         "nextMessageId": 12
     },
     {
@@ -89,10 +90,6 @@
     {
         "id": 13,
         "content": "After performing your morning duties, you head downstairs to fill your stomach before heading outside.",
-        "nextMessageId": 14
-    },
-    {
-        "id": 14,
-        "content": "DEBUG END"
+        "nextMessageId": 101
     }
 ]

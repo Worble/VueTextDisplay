@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import db from '../database/db';
-import { prototype } from 'pretty-error';
 
 Vue.use(Vuex)
 
@@ -147,7 +146,6 @@ const actions = {
           }
           break;
         default:
-          console.log("Default effectType hit; this should never happen");
           break;
       }
     })

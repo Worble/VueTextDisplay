@@ -1,0 +1,15 @@
+[{
+        "id": 101,
+        "previousMessageId": 102,
+        "content": "Look behind you",
+        "nextMessageId": 103,
+        "ordinal": 1
+    },
+    {
+        "id": 102,
+        "previousMessageId": 102,
+        "content": "Continue walking",
+        "nextMessageId": 104,
+        "ordinal": 2
+    }
+]

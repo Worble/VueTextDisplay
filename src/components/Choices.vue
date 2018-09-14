@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import addTransitionListener from "../helpers/addTransitionListener";
+import listeners from "../helpers/addTransitionListener";
 import events from "../constants/events";
 export default {
   name: "Choices",
@@ -31,7 +31,7 @@ export default {
       if (!event.target.closest(".modal")) {
         this.$refs.modal.classList.add("close");
         var that = this;
-        addTransitionListener(function() {
+        listeners.addAnimationListener(function() {
           that.$emit(events.closeChoicesModal);
         }, this.$refs.modal);
       }
@@ -70,7 +70,7 @@ export default {
       var choice = this.choices.find(choice => choice.id == id);
       var that = this;
       var modal = this.$refs.modal;
-      addTransitionListener(function() {
+      listeners.addAnimationListener(function() {
         that.$emit(events.choiceSelected, choice);
       }, modal);
       modal.classList.add("close");

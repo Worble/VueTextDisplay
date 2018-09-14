@@ -19,7 +19,7 @@
 <script>
 import events from "../constants/events";
 import actions from "../constants/actions";
-import addTransitionListener from "../helpers/addTransitionListener";
+import listeners from "../helpers/addTransitionListener";
 
 export default {
   name: "OptionsMenu",
@@ -28,7 +28,7 @@ export default {
       if (!event.target.closest(".modal")) {
         this.$refs.modal.classList.add("close");
         var that = this;
-        addTransitionListener(function() {
+        listeners.addAnimationListener(function() {
           that.$emit(events.closeSettingsModal);
         }, this.$refs.modal);
       }

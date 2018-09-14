@@ -1,0 +1,19 @@
+[{
+        "id": 101,
+        "clear": true,
+        "content": "Leaving your house, you feel a pricking sensation on your neck.",
+        "nextMessageId": 102
+    },
+    {
+        "id": 102,
+        "content": "'Again?' You think to yourself."
+    },
+    {
+        "id": 103,
+        "content": "You swiftly turn around, hoping to catch whoever it is must be looking at you."
+    },
+    {
+        "id": 104,
+        "content": "You continue on, not letting your nagging senses get to you."
+    }
+]

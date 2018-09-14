@@ -10,7 +10,7 @@
 <script>
 import events from "../constants/events";
 import actions from "../constants/actions";
-import addTransitionListener from "../helpers/addTransitionListener";
+import listeners from "../helpers/addTransitionListener";
 
 export default {
   name: "FrontPage",
@@ -65,7 +65,7 @@ export default {
     },
     exitAnimation(callback) {
       var activeButton = document.getElementsByClassName("active")[0];
-      addTransitionListener(callback, activeButton);
+      listeners.addAnimationListener(callback, activeButton);
       var buttons = document.getElementsByClassName("button");
       [].forEach.call(buttons, function(el) {
         el.classList.add("leave");
@@ -98,9 +98,10 @@ export default {
 .button {
   border: solid grey 1px;
   margin-top: 10px;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 15px;
   cursor: pointer;
   animation: button-enter 0.5s;
+  background-color: black;
 }
 
 .button.active {

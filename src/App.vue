@@ -24,6 +24,7 @@ import Vue from "vue";
 import events from "./constants/events";
 import actions from "./constants/actions";
 import generateGuid from "./helpers/generateGuid";
+import image from "./assets/background2.jpg";
 
 export default {
   name: "app",
@@ -40,6 +41,9 @@ export default {
   },
   created: function() {
     this.$store.dispatch(actions.restoreOptions);
+  },
+  mounted: function() {
+    document.body.style.backgroundImage = "url(" + image + ")";
   },
   methods: {
     handleStartNew: function() {
@@ -99,6 +103,7 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100vh;
   margin: 0;
+  background-size: cover;
 }
 
 #app {
@@ -107,7 +112,7 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  display: block;
+  display: flex;
   position: absolute;
   margin: 15px 35px;
 }

@@ -1,12 +1,36 @@
-export default function addTransitionListener(callback, node) {
+function addAnimationListener(callback, node) {
+    function whichAnimationEvent() {
+        var a;
+        var el = document.createElement("fakeelement");
+        var animations = {
+            animation: "animationend",
+            OAnimation: "oAnimationEnd",
+            MozAnimation: "animationend",
+            WebkitAnimation: "webkitAnimationEnd",
+        };
+
+        for (a in animations) {
+            if (el.style[a] !== undefined) {
+                return animations[a];
+            }
+        }
+    }
+    var animationEvent = whichAnimationEvent();
+    animationEvent &&
+        node.addEventListener(animationEvent, function () {
+            callback();
+        });
+}
+
+function addTransitionListener(callback, node) {
     function whichTransitionEvent() {
         var t;
         var el = document.createElement("fakeelement");
         var transitions = {
-            transition: "animationend",
-            OTransition: "oAnimationEnd",
-            MozTransition: "animationend",
-            WebkitTransition: "webkitAnimationEnd"
+            transition: 'transitionend',
+            OTransition: 'oTransitionEnd',
+            MozTransition: 'transitionend',
+            WebkitTransition: 'webkitTransitionEnd'
         };
 
         for (t in transitions) {
@@ -21,3 +45,5 @@ export default function addTransitionListener(callback, node) {
             callback();
         });
 }
+
+export default { addAnimationListener, addTransitionListener }

@@ -1,7 +1,7 @@
 <template>
     <div ref="container" class="container" tabIndex="0" @keydown.13="onEnter" v-on:click="onEnter">
-        <div ref="displayContainer">
-            <DisplayText :animateText=animateText :skipText=this.$store.state.options.disableAnimation.value v-on:animation-complete="setAnimationComplete" :text="currentMessage.content" />
+        <div ref="displayContainer" class="display-container">
+            <!-- <DisplayText :animateText=animateText :skipText=this.$store.state.options.disableAnimation.value v-on:animation-complete="setAnimationComplete" :text="currentMessage.content" /> -->
         </div>
         <br/>
         <div v-if="this.animationComplete">
@@ -21,6 +21,7 @@ import Choices from "./Choices.vue";
 import Vue from "vue";
 import events from "../constants/events";
 import actions from "../constants/actions";
+import listeners from "../helpers/addTransitionListener";
 
 export default {
   name: "DisplayTextContainer",
@@ -41,7 +42,12 @@ export default {
     }
   },
   mounted() {
-    this.$refs.container.focus();
+    var that = this;
+    listeners.addTransitionListener(function() {
+      that.appendText(that.currentMessage.content, that.currentMessage.clear);
+    }, this.$refs.container);
+    this.$refs.container.style.opacity = 1;
+    this.$refs.container.focus;
   },
   methods: {
     onEnter: function() {
@@ -76,9 +82,10 @@ export default {
       instance.$on(events.animationComplete, this.setAnimationComplete);
       if (clear) {
         this.$refs.displayContainer.innerHTML = "";
+      } else {
+        this.$refs.displayContainer.appendChild(document.createElement("br"));
       }
       instance.$mount();
-      this.$refs.displayContainer.appendChild(document.createElement("br"));
       this.$refs.displayContainer.appendChild(instance.$el);
     },
     closeChoicesMenu: function() {
@@ -118,6 +125,9 @@ export default {
   display: flex;
   height: 100%;
   flex-direction: column;
+  background-color: #00000080;
+  opacity: 0;
+  transition-duration: 1s;
 }
 .read-more {
   position: fixed;
@@ -125,7 +135,9 @@ export default {
   bottom: 10px;
   animation: rotate 1s infinite linear;
 }
-
+.display-container {
+  padding: 15px 15px;
+}
 @keyframes rotate {
   0% {
     transform: rotate3d(0, 1, 0, 0deg);

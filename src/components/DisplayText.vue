@@ -4,7 +4,7 @@
 </template>
 <script>
 import events from "../constants/events";
-import addTransitionListener from "../helpers/addTransitionListener";
+import listeners from "../helpers/addTransitionListener";
 export default {
   name: "DisplayText",
   props: ["animateText", "skipText", "text"],
@@ -33,7 +33,7 @@ export default {
 
           if (i == lines.length - 1 && j == words.length - 1) {
             var that = this;
-            addTransitionListener(function() {
+            listeners.addAnimationListener(function() {
               that.$emit(events.animationComplete);
             }, node);
           }
@@ -76,5 +76,24 @@ export default {
 <style>
 span.word {
   display: inline-block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 </style>
