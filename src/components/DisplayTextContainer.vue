@@ -46,11 +46,6 @@ export default {
     listeners.addTransitionListener(function() {
       that.appendText(that.currentMessage.content, that.currentMessage.clear);
     }, this.$refs.container);
-    //that.appendText(that.currentMessage.content, that.currentMessage.clear);
-    //this.$refs.container.focus;
-    // this.$nextTick(() => {
-    //   that.$refs.container.style.opacity = 1;
-    // });
     window.setTimeout(function() {
       that.$refs.container.style.opacity = 1;
       that.$refs.container.focus;
