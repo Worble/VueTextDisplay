@@ -7,16 +7,12 @@ import events from "../constants/events";
 import listeners from "../helpers/addTransitionListener";
 export default {
   name: "DisplayText",
-  props: ["animateText", "skipText", "text"],
-  watch: {
-    animateText: function() {
-      if (this.animateText == false) {
-        var els = document.getElementsByClassName("animated", "fadeIn");
-        this.removeClasses(els);
-        this.$emit(events.animationComplete);
-      }
-    }
+  data: function() {
+    return {
+      skipText: this.$store.state.options.disableAnimation.value
+    };
   },
+  props: ["animateText", "text"],
   mounted() {
     var node;
     var el = this.$refs.animationContainer;
@@ -58,12 +54,6 @@ export default {
         inline: "nearest"
       })
     );
-  },
-  methods: {
-    removeClasses: function(els) {
-      els[0].classList.remove("animated", "fadeIn");
-      if (els[0]) this.removeClasses(els);
-    }
   }
 };
 </script>

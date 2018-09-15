@@ -1,7 +1,7 @@
 <template>
     <div ref="container" class="container" tabIndex="0" @keydown.13="onEnter" v-on:click="onEnter">
         <div ref="displayContainer" class="display-container">
-            <!-- <DisplayText :animateText=animateText :skipText=this.$store.state.options.disableAnimation.value v-on:animation-complete="setAnimationComplete" :text="currentMessage.content" /> -->
+            <!-- <DisplayText :animateText=animateText v-on:animation-complete="setAnimationComplete" :text="currentMessage.content" /> -->
         </div>
         <br/>
         <div v-if="this.animationComplete">
@@ -46,13 +46,20 @@ export default {
     listeners.addTransitionListener(function() {
       that.appendText(that.currentMessage.content, that.currentMessage.clear);
     }, this.$refs.container);
-    this.$refs.container.style.opacity = 1;
-    this.$refs.container.focus;
+    //that.appendText(that.currentMessage.content, that.currentMessage.clear);
+    //this.$refs.container.focus;
+    // this.$nextTick(() => {
+    //   that.$refs.container.style.opacity = 1;
+    // });
+    window.setTimeout(function() {
+      that.$refs.container.style.opacity = 1;
+      that.$refs.container.focus;
+    }, 100);
   },
   methods: {
     onEnter: function() {
       if (!this.animationComplete) {
-        this.animateText = !this.animateText;
+        this.completeAnimations();
       } else if (
         this.currentMessage.choices &&
         this.currentMessage.choices.length > 0
@@ -75,7 +82,6 @@ export default {
         parent: this,
         propsData: {
           animateText: this.animateText,
-          skipText: this.$store.state.options.disableAnimation.value,
           text: text
         }
       });
@@ -115,6 +121,15 @@ export default {
             that.currentMessage.clear
           );
         });
+    },
+    completeAnimations: function() {
+      var els = document.getElementsByClassName("animated", "fadeIn");
+      this.removeClasses(els);
+      this.animationComplete = true;
+    },
+    removeClasses: function(els) {
+      els[0].classList.remove("animated", "fadeIn");
+      if (els[0]) this.removeClasses(els);
     }
   }
 };
